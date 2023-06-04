@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """
+Module to extract data from Scopus pages
 """
 import codecs
 import os
