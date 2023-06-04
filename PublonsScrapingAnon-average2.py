@@ -1,7 +1,7 @@
 # coding: utf-8
+# -*- coding: utf-8 -*-
 """
-Created on Aug 27 2018
-
+Module to extract data from WOS ResearcherID pages
 """
 
 import codecs
