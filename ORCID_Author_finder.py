@@ -1,44 +1,50 @@
-import codecs
-import requests
+import os
+from codecs import open
 from bs4 import BeautifulSoup
+from unidecode import unidecode
 from selenium import webdriver
-
-# Read list of names from TSV file
-with codecs.open('Authors_names.tsv', 'r', encoding='utf-8-sig') as input_file:
-    names = [line.strip() for line in input_file]
-
-# Open output file for writing
-with codecs.open('ORCIDresults.tsv', 'w', encoding='utf-8-sig') as output_file:
-    # Write header row to output file
-    output_file.write('Name\tORCID\n')
-
-    # Loop over names
-    for name in names:
-        # Open webpage using Selenium
-        driver = webdriver.Chrome()
-        driver.get('https://orcid.org/search?q=' + name)
-
-        # Parse HTML content using BeautifulSoup
-        soup = BeautifulSoup(driver.page_source, 'html.parser')
-
-        # Search for name and ORCID in parsed HTML
-        name_element = soup.find('div', {'class': 'search-result-name'})
-        orcid_element = soup.find('div', {'class': 'search-result-orcid'})
-
-        # Store extracted values in variables
-        if name_element is not None:
-            name_value = name_element.text.strip()
-        else:
-            name_value = 'N/A'
-
-        if orcid_element is not None:
-            orcid_value = orcid_element.text.strip()
-        else:
-            orcid_value = 'N/A'
-
-        # Write extracted information to output file
-        output_file.write(name_value + '\t' + orcid_value + '\n')
-
-        # Close Selenium driver
-        driver.quit()
-
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as ec
+def get_orcids():
+    """
+    This function searches for ORCIDs of authors in a given directory of TSV files and writes the results to new TSV files.
+    """
+    path = os.getcwd()  # get current working directory
+    counter = 1
+    driver = webdriver.Chrome()  # initialize Chrome driver
+    for file in [f for f in os.listdir(path) if f.startswith('Aut') and f.endswith('tsv')]:
+        # loop through TSV files in directory
+        with open(file, 'r', 'utf-8-sig') as temp:
+            # open file for reading
+            text = temp.readlines()[1:]
+            names = {x.split('\t')[1]: [] for x in text}
+            titles = [y.split('\t')[0].replace('\n', '') for y in text]
+        for author in names:
+            query = author.replace(' ', '%20')
+            driver.get('https://orcid.org/orcid-search/search?searchQuery=%s' % query)
+            WebDriverWait(driver, 10).until(ec.presence_of_element_located((By.TAG_NAME, 'tbody')))
+            root = BeautifulSoup(driver.page_source, 'lxml').find_all('tr', {'class': 'ng-star-inserted'})
+            for j in root:
+                comp = unidecode(author.lower())
+                data = [unidecode(y.getText().lower()) for y in j.find_all('td')[:3]]
+                if data[1] in comp and data[2] in comp:
+                    names[author].append(data[0].replace('\n', '').replace(' ', ''))
+                else:
+                    break
+        with open('orcids-%s.tsv' % counter, 'w', 'utf-8-sig') as results:
+            # open file for writing
+            results.write('Autor\tTítulo\tORCIDs encontrados\n')
+            for person, title, orcids in zip(names.keys(), titles, names.values()):
+                results.write('%s\t%s\t' % (person, title))
+                if len(orcids) == 0:
+                    results.write('ORCID não encontrado\n')
+                else:
+                    if len(orcids) > 1:
+                        for item in orcids[:-1]:
+                            results.write('%s, ' % item)
+                    results.write('%s\n' % orcids[-1])
+        counter += 1
+    driver.quit()  # close Chrome driver
+if __name__ == "__main__":
+    get_orcids(
