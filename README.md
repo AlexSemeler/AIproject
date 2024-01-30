@@ -9,7 +9,7 @@ They are ccodes for web scraping are create by AI (communicating in natural lang
 ========================================
 
 OUTPUT AI CODE FILE: ORCID_author.py
-This update and share in DOI:xxxxxx 
+This update and share in DOI:(https://doi.org/10.4108/eetsis.4067)
 
 
 The code uses web scraping to search for authors' ORCID IDs and add them to a TSV file. It first imports necessary modules and sets the path and counter variables. 
@@ -20,7 +20,7 @@ It then loops through TSV files in the directory that start with 'v' and end wit
 ========================================
 
 OUTPUT AI CODE FILE: GSCHOLARscraping.py
-This update and share in DOI:xxxxxx 
+This update and share in DOI:(https://doi.org/10.4108/eetsis.4067)
  
 
 This Python script extracts data from a list of Google Scholar pages and writes the results to a TSV file. The script uses the requests library to retrieve the HTML content of each page and the BeautifulSoup library to parse the HTML and extract the desired data. The extracted data includes the name of the scholar, total citations, citations since 2013, H-index, and H-index since 2013. The script also calculates the average H-index and total citations across all pages. Overall, this script can be helpful for researchers who want to analyze the impact of a group of scholars in a particular field.
@@ -28,7 +28,7 @@ This Python script extracts data from a list of Google Scholar pages and writes 
 ==========================================
 
 OUTPUT AI CODE FILE: SCOPUSscrapingAnon.py
-This update and share in DOI:xxxxxx
+This update and share in DOI:(https://doi.org/10.4108/eetsis.4067)
 
 
 The code extracts data from a list of links to authors' Scopus profiles and writes the extracted data to a file. The extracted data includes the author's Scopus ID, H-Index, the number of documents authored, and several citations received. 
@@ -36,7 +36,7 @@ The code extracts data from a list of links to authors' Scopus profiles and writ
 ==========================================
 
 OUTPUT AI CODE FILE: PublonsScrapingAnon-average2.py
-This update and share in DOI:xxxxxx 
+This update and share in DOI:(https://doi.org/10.4108/eetsis.4067)
 
 
 This code is a web scraper that extracts citation metrics data from a list of researcher profiles on the Publons platform and then writes the extracted data to a tab-separated values (TSV) file. It uses the Selenium and BeautifulSoup libraries to navigate and parse web pages. 
@@ -45,7 +45,7 @@ This code is a web scraper that extracts citation metrics data from a list of re
 
 
 OUTPUT AI CODE FILE: compare h index sources 
-This update and share in DOI:xxxxxx 
+This update and share in DOI:(https://doi.org/10.4108/eetsis.4067)
 
 
 
